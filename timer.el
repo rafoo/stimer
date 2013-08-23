@@ -37,6 +37,9 @@
 
 ;;; Code:
 
+(defcustom timer-buffer "*Timer*"
+  "Name of the buffer in which the timer is run.")
+
 (defvar timer-elapsed 0
   "time elapsed since last start of the timer-run function")
 (defvar timer-running nil
@@ -54,14 +57,16 @@ This command should be bound to some easy key-binding like SPACE."
 
 (defun timer-display ()
   "Display the current value of timer-elapsed."
-  (print timer-elapsed))
+  (let ((buffer (or (get-buffer timer-buffer) (switch-to-buffer timer-buffer))))
+    (with-current-buffer buffer (erase-buffer))
+    (print timer-elapsed buffer)))
 
 (defun timer-start ()
   "Run the timer until timer-stop turns the variable timer-running back to nil."
   (interactive)
   (let* ((start (current-time))
-         diff
-         )
+         diff)
+    (switch-to-buffer timer-buffer)
     (setq timer-running t)
     (while timer-running ; stoped by the timer-stop
       (sit-for 0)
