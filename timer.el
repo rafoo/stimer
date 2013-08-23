@@ -37,13 +37,40 @@
 
 ;;; Code:
 
+(defgroup timer nil
+  "A simple timer."
+  :group 'applications
+  )
+
 (defcustom timer-buffer "*Timer*"
-  "Name of the buffer in which the timer is run.")
+  "Name of the buffer in which the timer is run."
+  :group 'timer
+  :type 'string
+  )
+
+(defvar timer-mode-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map special-mode-map)
+    (define-key map "s" 'timer-start)
+    (define-key map " " 'timer-stop)
+    map)
+  "Keymap for `timer-mode'."
+  )
 
 (defvar timer-elapsed 0
   "Time elapsed since last start of the timer-run function.")
 (defvar timer-running nil
   "Whether the timer is running or stopped.")
+
+
+(define-derived-mode
+  timer-mode
+  special-mode
+  "Timer"
+  :group 'timer
+  :keymap 'timer-mode-map
+  )
+
 
 (defun timer-stop ()
   "Stop the timer.
@@ -52,8 +79,6 @@ This command should be bound to some easy key-binding like SPACE."
   (setq timer-running nil)
   (self-insert-command 1) ; for now
   )
-
-(global-set-key " " 'timer-stop)
 
 (defun timer-display ()
   "Display the current value of timer-elapsed."
