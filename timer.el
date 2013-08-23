@@ -41,9 +41,9 @@
   "Name of the buffer in which the timer is run.")
 
 (defvar timer-elapsed 0
-  "time elapsed since last start of the timer-run function")
+  "Time elapsed since last start of the timer-run function.")
 (defvar timer-running nil
-  "whether the timer is running or stopped")
+  "Whether the timer is running or stopped.")
 
 (defun timer-stop ()
   "Stop the timer.
@@ -68,7 +68,7 @@ This command should be bound to some easy key-binding like SPACE."
          diff)
     (switch-to-buffer timer-buffer)
     (setq timer-running t)
-    (while timer-running ; stoped by the timer-stop
+    (while timer-running ; stoped by the timer-stop command
       (sit-for 0)
       (setq diff (time-subtract (current-time) start))
       (setq timer-elapsed (+ (cadr diff) (/ (caddr diff) 1000000.0)))
