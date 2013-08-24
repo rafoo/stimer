@@ -94,15 +94,13 @@ If it doesn't exist yet, it is created and switched to."
       (erase-buffer)
       (insert (format "%f\n" timer-elapsed))
       (if running (insert "Running.") (insert "Not running."))
-      (insert "\n")
+      (insert "\n\n")
+      (insert (format "%d times\n" (length timer-time-list)))
       (insert (format "avg: %s\n" (apply 'timer-avg timer-time-list)))
       (insert (format "best: %s\n" (apply 'timer-min timer-time-list)))
       (insert (format "mean: %s\n" (apply 'timer-mean timer-time-list)))
-      (insert (format "times: %s\n" (length timer-time-list)))
       (insert "\n")
-      (insert "All times:\n")
-      (mapcar (lambda (time) (insert (format "%s, " time)))
-              timer-time-list)
+      (insert (format "All times:\n%s" timer-time-list))
       )))
 
 (defun timer-start ()
@@ -124,6 +122,7 @@ If it doesn't exist yet, it is created and switched to."
   "Run the timer and store the result in timer-time-list."
   (interactive)
   (setq timer-time-list (cons (timer-start) timer-time-list))
+  (timer-display nil)
   )
 
 (defun timer-dnf ()
