@@ -93,7 +93,7 @@ This command should be bound to some easy key-binding like SPC."
          diff)
     (switch-to-buffer timer-buffer)
     (timer-mode)
-    (while (sit-for 0.0001) ; stoped by the timer-stop command
+    (while (sit-for 0.0001) ; stoped by any event
       (setq diff (time-subtract (current-time) start))
       (setq timer-elapsed (+ (cadr diff) (/ (caddr diff) 1000000.0)))
       (timer-display t)
