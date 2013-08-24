@@ -59,9 +59,6 @@
 
 (defvar timer-elapsed 0
   "Time elapsed since last start of the timer-run function.")
-(defvar timer-running nil
-  "Whether the timer is running or stopped.")
-
 
 (define-derived-mode
   timer-mode
@@ -80,14 +77,14 @@ This command should be bound to some easy key-binding like SPC."
   (ignore)
   )
 
-(defun timer-display ()
+(defun timer-display (running)
   "Display the current value of timer-elapsed."
   (let ((buffer (or (get-buffer timer-buffer) (switch-to-buffer timer-buffer))))
     (with-current-buffer buffer
       (let ((buffer-read-only))
         (erase-buffer)
         (insert (format "%f\n" timer-elapsed))
-        (if timer-running (insert "Running.") (insert "Not running."))))))
+        (if running (insert "Running.") (insert "Not running."))))))
 
 (defun timer-start ()
   "Run the timer until an event occur."
@@ -96,14 +93,12 @@ This command should be bound to some easy key-binding like SPC."
          diff)
     (switch-to-buffer timer-buffer)
     (timer-mode)
-    (setq timer-running t)
     (while (sit-for 0.0001) ; stoped by the timer-stop command
       (setq diff (time-subtract (current-time) start))
       (setq timer-elapsed (+ (cadr diff) (/ (caddr diff) 1000000.0)))
-      (timer-display)
+      (timer-display t)
       )
-    (setq timer-running nil)
-    (timer-display)
+    (timer-display nil)
     timer-elapsed))
 
 (provide 'timer)
