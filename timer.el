@@ -71,34 +71,39 @@
   :keymap 'timer-mode-map
   )
 
+(add-hook 'timer-mode-hook 'buffer-disable-undo)
 
 (defun timer-stop ()
   "Stop the timer.
-This command should be bound to some easy key-binding like SPACE."
+This command should be bound to some easy key-binding like SPC."
   (interactive)
-  (setq timer-running nil)
-  (self-insert-command 1) ; for now
+  (ignore)
   )
 
 (defun timer-display ()
   "Display the current value of timer-elapsed."
   (let ((buffer (or (get-buffer timer-buffer) (switch-to-buffer timer-buffer))))
-    (with-current-buffer buffer (erase-buffer))
-    (print timer-elapsed buffer)))
+    (with-current-buffer buffer
+      (let ((buffer-read-only))
+        (erase-buffer)
+        (insert (format "%f\n" timer-elapsed))
+        (if timer-running (insert "Running.") (insert "Not running."))))))
 
 (defun timer-start ()
-  "Run the timer until timer-stop turns the variable timer-running back to nil."
+  "Run the timer until an event occur."
   (interactive)
   (let* ((start (current-time))
          diff)
     (switch-to-buffer timer-buffer)
+    (timer-mode)
     (setq timer-running t)
-    (while timer-running ; stoped by the timer-stop command
-      (sit-for 0)
+    (while (sit-for 0.0001) ; stoped by the timer-stop command
       (setq diff (time-subtract (current-time) start))
       (setq timer-elapsed (+ (cadr diff) (/ (caddr diff) 1000000.0)))
       (timer-display)
       )
+    (setq timer-running nil)
+    (timer-display)
     timer-elapsed))
 
 (provide 'timer)
