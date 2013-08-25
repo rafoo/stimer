@@ -83,11 +83,17 @@ If it doesn't exist yet, it is created and switched to."
     (let ((buffer-read-only))
       (erase-buffer)
       (insert (format "%d times\n" (length cube-time-list)))
-      (insert (format "avg: %s\n" (apply 'dnf-avg cube-time-list)))
-      (insert (format "best: %s\n" (apply 'dnf-min cube-time-list)))
-      (insert (format "mean: %s\n" (apply 'dnf-mean cube-time-list)))
+      (insert (format "avg: %s\n"
+                      (dnf-string
+                       (apply 'dnf-avg cube-time-list))))
+      (insert (format "best: %s\n"
+                      (dnf-string
+                       (apply 'dnf-min cube-time-list))))
+      (insert (format "mean: %s\n"
+                      (dnf-string
+                       (apply 'dnf-mean cube-time-list))))
       (insert "\n")
-      (insert (format "All times:\n%s" cube-time-list))
+      (insert (format "All times:\n%s" (mapcar 'dnf-string cube-time-list)))
       )))
 
 (defun cube-next-time ()
@@ -115,10 +121,10 @@ If it doesn't exist yet, it is created and switched to."
 (defun cube ()
   "Switch to the cube buffer."
   (interactive)
-  (timer)
-  (pop-to-buffer (cube-buffer))
+  (switch-to-buffer (cube-buffer))
   (cube-mode)
   (cube-display)
+  (display-buffer (timer-buffer))
   )
 
 (provide 'cube)

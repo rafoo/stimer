@@ -36,6 +36,10 @@
 
 ;;; Code:
 
+(defun dnf-string (a)
+  "Convert a number or dnf to a string."
+  (if (eq a 'dnf) "DNF" (format "%.2f" a)))
+
 (defun dnf< (a b)
   "Return t if first arg is less than second arg.
 Any number is considered less than dnf."

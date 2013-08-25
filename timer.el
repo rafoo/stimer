@@ -76,14 +76,14 @@ If it doesn't exist yet, it is created and switched to."
   (with-current-buffer (timer-buffer)
     (let ((buffer-read-only))
       (erase-buffer)
-      (insert (format "%f\n" elapsed)))))
+      (insert (format "%.2f\n" elapsed)))))
 
 (defun timer-countdown-display (elapsed init)
   "Display the value of init - elapsed in the timer buffer."
   (with-current-buffer (timer-buffer)
     (let ((buffer-read-only))
       (erase-buffer)
-      (insert (format "%f\n" (- init elapsed))))))
+      (insert (format "%.2f\n" (- init elapsed))))))
 
 (defun timer-start (&optional display &rest args)
   "Run the timer until an event occur.
