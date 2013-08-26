@@ -76,14 +76,14 @@ If it doesn't exist yet, it is created and switched to."
   (with-current-buffer (stimer-buffer)
     (let ((buffer-read-only))
       (erase-buffer)
-      (insert (format "%.2f\n" elapsed)))))
+      (insert (format "%.2f" elapsed)))))
 
 (defun stimer-countdown-display (elapsed init)
   "Display the value of init - elapsed in the stimer buffer."
   (with-current-buffer (stimer-buffer)
     (let ((buffer-read-only))
       (erase-buffer)
-      (insert (format "%.2f\n" (- init elapsed))))))
+      (insert (format "%.2f" (- init elapsed))))))
 
 (defun stimer-start (&optional display &rest args)
   "Run the stimer until an event occur.
