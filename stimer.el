@@ -1,4 +1,4 @@
-;;; timer.el --- A simple timer for Emacs
+;;; stimer.el --- A simple timer for Emacs
 
 ;;; Copyright (C) 2013 Raphaël Cauderlier <cauderlier@crans.org>
 
@@ -26,74 +26,74 @@
 ;;; Commentary:
 ;; Installation:
 ;; Add these lines to your emacs init file :
-; (add-to-list 'load-path "<path-to-timer>/")
-; (require 'timer)
+; (add-to-list 'load-path "<path-to-stimer>/")
+; (require 'stimer)
 
 ;; run this programme by the command
-; M-x timer-start
+; M-x stimer-start
 
 ;; Description:
 ;; This file implements a simple timer for Emacs.
 
 ;;; Code:
 
-(defgroup timer nil
+(defgroup stimer nil
   "A simple timer."
   :group 'applications
   )
 
-(defcustom timer-buffer-name "*Timer*"
-  "Name of the buffer in which the timer is run."
-  :group 'timer
+(defcustom stimer-buffer-name "*STimer*"
+  "Name of the buffer in which the stimer is run."
+  :group 'stimer
   :type 'string
   )
 
-(setq timer-mode-map
+(setq stimer-mode-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map special-mode-map)
-    (define-key map "s" 'timer-start)
+    (define-key map "s" 'stimer-start)
     map)
   )
 
 (define-derived-mode
-  timer-mode
+  stimer-mode
   special-mode
-  "Timer"
-  :group 'timer
-  :keymap 'timer-mode-map
+  "STimer"
+  :group 'stimer
+  :keymap 'stimer-mode-map
   )
 
-(add-hook 'timer-mode-hook 'buffer-disable-undo)
+(add-hook 'stimer-mode-hook 'buffer-disable-undo)
 
-(defun timer-buffer ()
-  "Returns the buffer in which the timer is displayed.
+(defun stimer-buffer ()
+  "Returns the buffer in which the stimer is displayed.
 If it doesn't exist yet, it is created and switched to."
-  (or (get-buffer timer-buffer-name)
-      (switch-to-buffer timer-buffer-name)))
+  (or (get-buffer stimer-buffer-name)
+      (switch-to-buffer stimer-buffer-name)))
 
-(defun timer-simple-display (elapsed)
-  "Display the value of elapsed in the timer buffer."
-  (with-current-buffer (timer-buffer)
+(defun stimer-simple-display (elapsed)
+  "Display the value of elapsed in the stimer buffer."
+  (with-current-buffer (stimer-buffer)
     (let ((buffer-read-only))
       (erase-buffer)
       (insert (format "%.2f\n" elapsed)))))
 
-(defun timer-countdown-display (elapsed init)
-  "Display the value of init - elapsed in the timer buffer."
-  (with-current-buffer (timer-buffer)
+(defun stimer-countdown-display (elapsed init)
+  "Display the value of init - elapsed in the stimer buffer."
+  (with-current-buffer (stimer-buffer)
     (let ((buffer-read-only))
       (erase-buffer)
       (insert (format "%.2f\n" (- init elapsed))))))
 
-(defun timer-start (&optional display &rest args)
-  "Run the timer until an event occur.
-The argument DISPLAY is a function called with the time to display as first argument and ARGS as rest arguments; it defaults to timer-simple-display."
+(defun stimer-start (&optional display &rest args)
+  "Run the stimer until an event occur.
+The argument DISPLAY is a function called with the time to display as first argument and ARGS as rest arguments; it defaults to stimer-simple-display."
   (interactive)
   (let* ((start (current-time))
-         (display (or display 'timer-simple-display))
+         (display (or display 'stimer-simple-display))
          diff elapsed)
-    (with-current-buffer (timer-buffer)
-      (timer-mode))
+    (with-current-buffer (stimer-buffer)
+      (stimer-mode))
     (while (sit-for 0.0001) ; stoped by any event
       (setq diff (time-subtract (current-time) start))
       (setq elapsed (+ (cadr diff) (/ (caddr diff) 1000000.0)))
@@ -102,12 +102,12 @@ The argument DISPLAY is a function called with the time to display as first argu
     (apply display elapsed args)
     elapsed))
 
-(defun timer ()
-  "Switch to the timer buffer."
+(defun stimer ()
+  "Switch to the stimer buffer."
   (interactive)
-  (switch-to-buffer (timer-buffer))
-  (timer-mode)
-  (timer-simple-display 0)
+  (switch-to-buffer (stimer-buffer))
+  (stimer-mode)
+  (stimer-simple-display 0)
   )
 
-(provide 'timer)
+(provide 'stimer)

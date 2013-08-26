@@ -36,7 +36,7 @@
 
 (add-to-list 'load-path "./")
 
-(require 'timer)
+(require 'stimer)
 (require 'dnf)
 
 (defvar cube-time-list nil
@@ -66,7 +66,6 @@ If it doesn't exist yet, it is created and switched to."
     (define-key map "d" 'cube-dnf)
     (define-key map (kbd "DEL") 'cube-clear-list)
     map)
-;  "Keymap for `timer-mode'."
   )
 
 (define-derived-mode
@@ -97,9 +96,9 @@ If it doesn't exist yet, it is created and switched to."
       )))
 
 (defun cube-next-time ()
-  "Run the timer and store the result in cube-time-list."
+  "Run the stimer and store the result in cube-time-list."
   (interactive)
-  (setq cube-time-list (cons (timer-start) cube-time-list))
+  (setq cube-time-list (cons (stimer-start) cube-time-list))
   (cube-display)
   )
 
@@ -115,7 +114,7 @@ If it doesn't exist yet, it is created and switched to."
   (interactive)
   (setq cube-time-list nil)
   (cube-display)
-  (timer-simple-display 0)
+  (stimer-simple-display 0)
   )
 
 (defun cube ()
@@ -124,7 +123,7 @@ If it doesn't exist yet, it is created and switched to."
   (switch-to-buffer (cube-buffer))
   (cube-mode)
   (cube-display)
-  (display-buffer (timer-buffer))
+  (display-buffer (stimer-buffer))
   )
 
 (provide 'cube)
