@@ -1,0 +1,35 @@
+#+Title: STimer: A simple timer for Emacs
+#+Author: Raphaël Cauderlier
+#+Email: cauderlier@crans.org
+
+* Description
+STimer is a timer for Emacs. It aims at providing a very simple interface for precision time measure.
+
+* Installation
+To install STimer, put all the files in a directory (let call it D) and add the following lines to your Emacs configuration file (.emacs):
+
+#+Begin_src emacs-lisp
+  (add-to-list 'load-path "<D>")
+  (require 'stimer)
+#+End_src
+
+STimer can then be invoqued by the command =stimer=; inside Emacs type =M-x stimer <RET>=.
+
+You should switch to a new Buffer =*STimer*= presenting the timer count (set to 0 at startup).
+You can get a list of commands by typing =h= or =?=, the usefull ones are
+ * =s=: start a timer
+ * =c=: start a countdown timer for 15 seconds
+
+To stop the timer, you can press any standard key (even =s= or =c= if you want to immediatly restart a timer)
+or press or release any mouse button.
+
+* Speedcube timer
+Stimer comes with a speedcube timer called "cube" (until I find a better name). It can be installed in a similar way to STimer:
+
+#+Begin_src emacs-lisp
+  (add-to-list 'load-path "<D>")
+  (require 'cube)
+#+End_src
+
+The speedcube timer can be invoqued with the command =cube=; inside Emacs type =M-x cube <RET>=.
+This command will switch to two buffers: the Stimer buffer and a buffer for speedcube informations.
