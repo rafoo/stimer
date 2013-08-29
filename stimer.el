@@ -52,6 +52,7 @@
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map special-mode-map)
     (define-key map "s" 'stimer-start)
+    (define-key map "c" (lambda () (interactive) (stimer-start 'stimer-countdown-display 15)))
     map)
   )
 
