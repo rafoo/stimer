@@ -52,7 +52,7 @@
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map special-mode-map)
     (define-key map "s" 'stimer-start)
-    (define-key map "c" (lambda () (interactive) (stimer-start 'stimer-countdown-display 15)))
+    (define-key map "c" 'stimer-countdown)
     map)
   )
 
@@ -102,6 +102,11 @@ The argument DISPLAY is a function called with the time to display as first argu
       )
     (apply display elapsed args)
     elapsed))
+
+(defun stimer-countdown ()
+  "Start the countdown timer with a countdown of 15 seconds, does not stop at 0."
+  (interactive)
+  (stimer-start 'stimer-countdown-display 15))
 
 (defun stimer ()
   "Switch to the stimer buffer."
